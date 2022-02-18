@@ -14,17 +14,20 @@ module ``about tuples`` =
     let CreatingTuples() =
         let items = ("apple", "dog")
         
-        AssertEquality items ("apple", __)
+        AssertEquality items ("apple", "dog") // what
+        AssertEquality items ("apple", snd items) // oh, it's leterally the next koan
         
     [<Koan>]
     let AccessingTupleElements() =
         let items = ("apple", "dog")
+        // compile error -- aparently two elements only
+        // let items = ("apple", "dog", "sun")
         
         let fruit = fst items
         let animal = snd items
         
-        AssertEquality fruit __
-        AssertEquality animal __
+        AssertEquality fruit "apple"
+        AssertEquality animal "dog"
 
     [<Koan>]
     let AccessingTupleElementsWithPatternMatching() =
@@ -41,9 +44,9 @@ module ``about tuples`` =
         
         let fruit, animal, car = items
         
-        AssertEquality fruit __
-        AssertEquality animal __
-        AssertEquality car __
+        AssertEquality fruit "apple"
+        AssertEquality animal "dog"
+        AssertEquality car "Mustang"
         
     [<Koan>]
     let IgnoringValuesWithPatternMatching() =
@@ -51,7 +54,7 @@ module ``about tuples`` =
         
         let _, animal, _ = items
         
-        AssertEquality animal __
+        AssertEquality animal "dog"
     
     (* NOTE: pattern matching is found in many places
              throughout F#, and we'll revisit it again later *)
@@ -64,8 +67,8 @@ module ``about tuples`` =
         let squared, cubed = squareAndCube 3.0
         
         
-        AssertEquality squared __
-        AssertEquality cubed __
+        AssertEquality squared 9.0
+        AssertEquality cubed 27
     
     (* THINK ABOUT IT: Is there really more than one return value?
                        What type does the squareAndCube function
@@ -78,4 +81,4 @@ module ``about tuples`` =
             
         let result = squareAndCube 3.0
        
-        AssertEquality result __
+        AssertEquality result (9, 27)

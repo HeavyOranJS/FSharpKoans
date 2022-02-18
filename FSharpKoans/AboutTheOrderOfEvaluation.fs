@@ -17,10 +17,18 @@ module ``about the order of evaluation`` =
             x + y
 
         let result = add (add 5 8) (add 1 1)
-
-        AssertEquality result __
+        AssertEquality result 15
 
         (* TRY IT: What happens if you remove the parenthesis?*)
+
+        let result = add (5+8) (add 1 1)
+        AssertEquality result 15
+
+        // meh
+        let superAdd add x y x2 y2 =
+            add x y + add x2 y2
+        let result = superAdd add 5 8 1 1
+        AssertEquality result 15
 
     [<Koan>]
     let TheBackwardPipeOperatorCanAlsoHelpWithGrouping() =
@@ -31,5 +39,14 @@ module ``about the order of evaluation`` =
             x * 2
 
         let result = double <| add 5 8
+        AssertEquality result 26
 
-        AssertEquality result __
+        // pipe is good
+        let result = add 5 8 |> double
+        AssertEquality result 26
+
+        let result = add 8 (double 5)
+        AssertEquality result 18
+
+        let result = double (add 8 5)
+        AssertEquality result 26

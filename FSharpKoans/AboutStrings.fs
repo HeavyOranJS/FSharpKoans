@@ -14,19 +14,21 @@ module ``about strings`` =
     let StringValue() =
         let message = "hello"
 
-        AssertEquality message __
+        AssertEquality message "hello"
 
     [<Koan>]
     let StringConcatValue() =
         let message = "hello " + "world"
 
-        AssertEquality message __
+        AssertEquality message "hello world"
 
     [<Koan>]
     let FormattingStringValues() =
+        // let message = sprintf "F# turns it to %s!" "str"
+        // let message = sprintf "F# turns it to %f!" -1.2
         let message = sprintf "F# turns it to %d!" 11
 
-        AssertEquality message __
+        AssertEquality message "F# turns it to 11!"
 
         //NOTE: you can use printf to print to standard output
 
@@ -37,13 +39,18 @@ module ``about strings`` =
     let FormattingOtherTypes() =
         let message = sprintf "hello %s" "world"
 
-        AssertEquality message __
+        AssertEquality message "hello world"
 
+
+    type SomeType = { some: int; other:int }
     [<Koan>]
     let FormattingAnything() =
         let message = sprintf "Formatting other types is as easy as: %A" (1, 2, 3)
+        AssertEquality message "Formatting other types is as easy as: (1, 2, 3)"
 
-        AssertEquality message __
+        let someType = { some=1; other= 2 }
+        let message = sprintf "Formatting other types is as easy as: %A" someType
+        AssertEquality message "Formatting other types is as easy as: { some = 1\n  other = 2 }"
 
     (* NOTE: For all the %formatters that you can use with string formatting 
              see: https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/plaintext-formatting *)
@@ -56,7 +63,7 @@ module ``about strings`` =
                         expiali\
                         docious"
 
-        AssertEquality message __
+        AssertEquality message "supercalifragilisticexpialidocious"
 
     [<Koan>]
     let Multiline() =
@@ -67,7 +74,12 @@ module ``about strings`` =
                         lines"
 
         AssertEquality
-              message __
+              message "This
+                        is
+                        on
+                        five
+                        lines"
+
 
     [<Koan>]
     let ExtractValues() =
@@ -79,15 +91,24 @@ module ``about strings`` =
  (* A single character is denoted using single quotes, example: 'c',
         not double quotes as you would use for a string *)
            
-        AssertEquality first __
-        AssertEquality other __
+        AssertEquality first 'h'
+        AssertEquality other 'o'
 
     [<Koan>]
     let ApplyWhatYouLearned() =
         (* It's time to apply what you've learned so far. Fill in the function below to
            make the asserts pass *)
+        let getMultiplicationInfo number multiplier =
+            let multiplierString =
+                match multiplier with
+                    | 2 -> "doubled"
+                    | 3 -> "tripled"
+                    | _ -> "octopled probably, isn't it..?"
+            $"{number} {multiplierString} is {number*multiplier}"
+
         let getFunFacts x =
-            __
+            $"{getMultiplicationInfo x 2}, and {getMultiplicationInfo x 3}!"
+
 
         let funFactsAboutThree = getFunFacts 3
         let funFactsAboutSix = getFunFacts 6

@@ -10,7 +10,6 @@ open FSharpKoans.Core
 //---------------------------------------------------------------
 [<Koan(Sort = 13)>]
 module ``more about functions`` =
-    
     [<Koan>]
     let DefiningLambdas() =
         
@@ -20,7 +19,7 @@ module ``more about functions`` =
             colors
             |> List.map (fun x -> x + " " + x)
 
-        AssertEquality echo __
+        AssertEquality echo ["maize maize"; "blue blue"]
 
         (* The fun keyword allows you to create a function inline without giving
            it a name. These functions are known as anonymous functions, lambdas,
@@ -35,15 +34,19 @@ module ``more about functions`` =
 
         (* F#'s lightweight syntax allows you to call both functions as if there
            was only one *)
+        // wow, currying is fun here
         let simpleResult = add 2 4
-        AssertEquality simpleResult __
+        AssertEquality simpleResult 6
 
         (* ...but you can also pass only one argument at a time to create
            residual functions. This technique is known as partial application. *)
         let addTen = add 10
         let fancyResult = addTen 14
-
-        AssertEquality fancyResult __
+        AssertEquality fancyResult 24
+        let fancyResult = addTen 13
+        AssertEquality fancyResult 23
+        let fancyResult = addTen -10
+        AssertEquality fancyResult 0
 
         //NOTE: Functions written in this style are said to be curried.
 
@@ -54,12 +57,14 @@ module ``more about functions`` =
         let add x y = 
             x + y
 
-        let addSeven = add 7
+        let addSeven = add 7 // this is pretty cool, but so implicit
+        // i mean name helps, but..
         let unluckyNumber = addSeven 6
         let luckyNumber = addSeven 0
 
-        AssertEquality unluckyNumber __
-        AssertEquality luckyNumber __
+        // also cool koan haha
+        AssertEquality unluckyNumber 13
+        AssertEquality luckyNumber 7
 
     [<Koan>]
     let NonCurriedFunctions() =
@@ -68,7 +73,7 @@ module ``more about functions`` =
            make them easier to use from languages like C# where currying is not 
            as commonly used. *)
 
-        let add(x, y) =
+        let add(x, y) = // <- seems like it should be written "add (x, y)"
             x + y
 
         (* NOTE: "add 5" will not compile now. You have to pass both arguments 
@@ -76,9 +81,13 @@ module ``more about functions`` =
 
         let result = add(5, 40)
 
-        AssertEquality result __
+        AssertEquality result 45
 
         (* THINK ABOUT IT: You learned earlier that functions with multiple 
                            return values are really just functions that return
                            tuples. Do functions defined in the uncurried form
                            really accept more than one argument at a time? *)
+
+        let testTuple = (5,40)
+        let result = add testTuple
+        AssertEquality result 45

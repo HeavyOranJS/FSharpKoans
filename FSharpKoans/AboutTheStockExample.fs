@@ -58,8 +58,43 @@ module ``about the stock example`` =
     // tests for yourself along the way. You can also try 
     // using the F# Interactive window to check your progress.
 
+    type stockDataRow = {
+        // Date: System.DateTime;
+        Date: string;
+        Open: float;
+        High: float;
+        Low: float;
+        Close: float;
+        Volume: int32;
+        AdjClose: float
+    }
+    let rawData = stockData.Tail
+    // let invariantParse = System.Double.Parse CultureInfo.InvariantCulture
+    let splitCommas (x:string) =
+        x.Split([|','|])
+
+    let toStockDataRow rawDataRow =
+        let separatedData = splitCommas rawDataRow
+        {
+            // Date = System.DateTime.Parse separatedData.[0];
+            Date = separatedData.[0];
+            Open = System.Double.Parse separatedData.[1];
+            High = System.Double.Parse separatedData.[3];
+            Low = System.Double.Parse separatedData.[4];
+            Close = System.Double.Parse separatedData.[5];
+            Volume = System.Int32.Parse separatedData.[6];
+            AdjClose = System.Double.Parse separatedData.[7]
+        }
+
+    let calcDiff (row: stockDataRow) =
+        abs row.Open - row.Close
+
     [<Koan>]
     let YouGotTheAnswerCorrect() =
-        let result =  __
+        let result =
+            List.map toStockDataRow rawData
+            |> List.maxBy calcDiff
+
+        let result = result.Date
         
         AssertEquality "2012-03-13" result
